@@ -15,7 +15,7 @@ const Landing = () => {
     const response = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/profile",
+          `${import.meta.env.VITE_BACKEND_URL}/profile`,
           { withCredentials: true }
         );
 
@@ -36,7 +36,7 @@ useEffect(() => {
   const getResume = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/resume/all",
+        `${import.meta.env.VITE_BACKEND_URL}/resume/all`,
         { withCredentials: true }
       );
       setResumes(res.data);
@@ -54,7 +54,7 @@ const handleEdit = (resume) => {
     )
 };
 const signout = async() =>{
-    const response = await axios.post("http://localhost:5000/signout",
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}`/signout``,
         {},
         {withCredentials: true
     })

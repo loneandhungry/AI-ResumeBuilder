@@ -40,7 +40,7 @@ const Builder = () => {
           localStorage.setItem("form",JSON.stringify(formData)); //LOCALSTORAGE CANNOT STORE OBJECTS
                                                               //IT CAN ONLY STORE STRINGS
          try{
-     const response = await axios.get( "http://localhost:5000/isauth",
+     const response = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/isauth`,
      { withCredentials: true }
 );
      if(response.status === 200 ){     //axios.get
@@ -50,7 +50,7 @@ const Builder = () => {
           
 //////////////////////////////////////
      try{
-      const saveResume = await axios.post("http://localhost:5000/profilebuild",
+      const saveResume = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/profilebuild`,
         {profile: {...formData}},
         {withCredentials: true}
       )
@@ -64,7 +64,7 @@ const Builder = () => {
      }
 /////////////////////////////////
   try{
-    const save = await axios.post("http://localhost:5000/profileBuild",
+    const save = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/profileBuild`,
      { formData},
      { withCredentials: true }
     ) }
@@ -199,7 +199,7 @@ const HandleEnhance = async () => {
         let description = formData.projects[i].description; if(!description){break;}
         let techstack = formData.projects[i].techstack;
        
-        let data = await axios.post("http://localhost:5000/ai/project",
+        let data = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/ai/project`,
             {
                title,
                description,
@@ -224,7 +224,7 @@ const HandleEnhance = async () => {
         if(!description){
             continue;
         }
-        let data = await axios.post("http://localhost:5000/ai/experience",
+        let data = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/ai/experience`,
             {
                company,
                role,

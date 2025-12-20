@@ -20,7 +20,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/signup",
+        `${import.meta.env.VITE_BACKEND_URL}/signup`,
         {
           username: formData.username,
           password: formData.password
