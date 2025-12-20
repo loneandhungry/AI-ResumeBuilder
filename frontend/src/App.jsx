@@ -10,7 +10,7 @@ import Template2 from './Component/template2';
 import axios from "axios";
 import Signup from './Component/signup';
 import Landing from './Component/landing';
-import dotenv from "dotenv"
+
 
 
 function App(){
