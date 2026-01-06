@@ -22,9 +22,8 @@ route.get("/",(req,res)=>{
 })
 
 route.use(cors({
-    origin: "http://localhost:5173",
+    origin: `${process.dotenv.FRONTEND_URL}`,
     credentials: true,
-    withCredentials: true
 }))
 
 
