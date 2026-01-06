@@ -109,8 +109,8 @@ route.post("/signin",async(req,res)=>{
       
       res.cookie("authToken",token,{  //name,value
         httpOnly: true,  //	Flags the cookie to be accessible only by the web server.
-       // secure: false,  //marks the cookie to be used with https only
-        sameSite: "strict", //Value of the “SameSite” Set-Cookie attribute
+        secure: true,  //marks the cookie to be used with https only //without this, cookie cant work on https
+        sameSite: "none", //Value of the “SameSite” Set-Cookie attribute
         maxAge: 2*24*60*60*1000
       })
       
@@ -256,9 +256,9 @@ route.delete("/user/delete/:id", verify , async(req,res)=>{
 
 route.post("/signout",verify,(req,res)=>{
         res.clearCookie("authToken",{
-         httpOnly: true,  //	Flags the cookie to be accessible only by the web server.
-       // secure: false,  //marks the cookie to be used with https only
-        sameSite: "strict", //Value of the “SameSite” Set-Cookie attribute
+          httpOnly: true,  //	Flags the cookie to be accessible only by the web server.
+        secure: true,  //marks the cookie to be used with https only //without this, cookie cant work on https
+        sameSite: "none", //Value of the “SameSite” Set-Cookie attribute
         maxAge: 2*24*60*60*1000
     })
      return res.json({ msg : "You have successfullly signed out."})
