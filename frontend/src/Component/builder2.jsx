@@ -166,77 +166,118 @@ const templateRef = useRef(null);
   ///
   //  h-screen : OCCUPY FULL HEIGHT OF THE SCREEN 
   return (
-  <div className="min-h-screen bg-white flex flex-col lg:flex-row gap-6 px-4 py-6">
-      
-        <div className="lg:w-3/5 w-full">
-  
-    <div className="mt-3 mb-4">
-      <h2 className="text-3xl font-black text-[#018790] tracking-tight mb-3">
-        Add your experience
-      </h2>
-      <h1 className="text-xl text-gray-500 tracking-tight">
-       Time to make your past sound impressive! 
-      </h1>
-    </div>
+  <div className="min-h-screen bg-white flex flex-col lg:flex-row gap-6 px-4 sm:px-6 py-6">
 
-   
-    <div className="bg-[#F4F4F4] rounded-lg  lg:p-8 overflow-auto ">
-      <form  className="flex flex-col gap-6">    
+    {/* LEFT SECTION - Form */}
+    <div className="lg:w-3/5 w-full">
+      <div className="mt-3 mb-4">
+        <h2 className="text-2xl sm:text-3xl font-black text-[#018790] tracking-tight mb-2 sm:mb-3">
+          Add your experience
+        </h2>
+        <h1 className="text-sm sm:text-base text-gray-500 tracking-tight">
+          Time to make your past sound impressive!
+        </h1>
+      </div>
 
-        {/* EXPERIENCE */}
-        <div className="flex flex-col gap-4">
-          <h3 className="font-medium text-gray-700">Experience</h3>
-          {formData.experience.map((exp, index) => (
-            <div key={index} className="border  border-gray-200 rounded-lg p-4 flex flex-col gap-3">
-              <div className="flex flex-col gap-3 gap-3">
-                <input className="input border  bg-white border-gray-300 px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="Company" value={exp.company} onChange={(e) => handleExperience(index, "company", e.target.value)} />
-                <input className="input border  bg-white border-gray-300 px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="Role" value={exp.role} onChange={(e) => handleExperience(index, "role", e.target.value)} />
-                <input className="input border  bg-white border-gray-300 px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="Duration" value={exp.duration} onChange={(e) => handleExperience(index, "duration", e.target.value)} />
+      <div className="bg-[#F4F4F4] rounded-lg lg:p-6 sm:p-4 p-3 overflow-auto max-h-[70vh] sm:max-h-[80vh] lg:max-h-[90vh]">
+        <form className="flex flex-col gap-4 sm:gap-6">
+
+          {/* EXPERIENCE */}
+          <div className="flex flex-col gap-4">
+            <h3 className="font-medium text-gray-700">Experience</h3>
+            {formData.experience.map((exp, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-3 sm:p-4 flex flex-col gap-3">
+                <div className="flex flex-col gap-3">
+                  <input
+                    className="input border bg-white border-gray-300 px-3 sm:px-4 py-2 sm:py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors"
+                    placeholder="Company"
+                    value={exp.company}
+                    onChange={(e) => handleExperience(index, "company", e.target.value)}
+                  />
+                  <input
+                    className="input border bg-white border-gray-300 px-3 sm:px-4 py-2 sm:py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors"
+                    placeholder="Role"
+                    value={exp.role}
+                    onChange={(e) => handleExperience(index, "role", e.target.value)}
+                  />
+                  <input
+                    className="input border bg-white border-gray-300 px-3 sm:px-4 py-2 sm:py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors"
+                    placeholder="Duration"
+                    value={exp.duration}
+                    onChange={(e) => handleExperience(index, "duration", e.target.value)}
+                  />
+                </div>
+                <textarea
+                  className="input bg-white border border-gray-300 px-3 sm:px-4 py-2 sm:py-3 rounded-lg focus:border-[#00B7B5] focus:outline-none transition-colors min-h-[120px] resize-none"
+                  placeholder="Describe your work, impact, technologies used..."
+                  value={exp.description}
+                  onChange={(e) => handleExperience(index, "description", e.target.value)}
+                />
               </div>
-              <textarea className="input  bg-white border border-gray-300 px-4 py-3 rounded-lg focus:border-[#00B7B5] focus:outline-none transition-colors min-h-[120px] resize-none" placeholder="Describe your work, impact, technologies used..." value={exp.description} onChange={(e) => handleExperience(index, "description", e.target.value)} />
+            ))}
+            <div className="flex flex-wrap gap-3">
+              <button type="button" className="btn-secondary w-fit" onClick={addExperience}>
+                + Add Experience
+              </button>
+              <button type="button" className="btn-secondary w-fit" onClick={removeExperience}>
+                + Remove Experience
+              </button>
             </div>
-          ))}
-          <div>
-          <button type="button" className="btn-secondary w-fit" onClick={addExperience}>+ Add Experience</button>
-          <button type="button" className="btn-secondary w-fit mx-4" onClick={removeExperience}>+ Remove Experience</button>
           </div>
-        </div>
 
-        <div>
-      
-        <button type="button" className={`px-4 py-2 rounded-md border
-            ${button === false ? "bg-white" : "bg-[#00B7B5]/10"}
-           border-[#00B7B5] text-[#00B7B5] text-lg
-           hover:bg-[#00B7B5]/10 transition w-full` } onClick={HandleEnhance}>✨ Enhance with AI</button>
-           </div>
-           <div>
-        <button type="button" className=" px-7 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-lg hover:bg-[#00B7B5]/20 transition w-fit" onClick={HandleProject}>Add Projects Next</button>
-        <button type="button" className=" mx-5 px-7 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-lg hover:bg-[#00B7B5]/20 transition w-fit" onClick={GoBack}>Go Back</button>
-        </div>
-      </form>
-      
+          {/* ENHANCE BUTTON */}
+          <div>
+            <button
+              type="button"
+              className={`px-4 py-2 rounded-md border w-full sm:w-auto
+                ${button === false ? "bg-white" : "bg-[#00B7B5]/10"}
+                border-[#00B7B5] text-[#00B7B5] text-base sm:text-lg
+                hover:bg-[#00B7B5]/10 transition`}
+              onClick={HandleEnhance}
+            >
+              ✨ Enhance with AI
+            </button>
+          </div>
+
+          {/* NAVIGATION BUTTONS */}
+          <div className="flex flex-wrap gap-3 mt-3">
+            <button
+              type="button"
+              className="px-6 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-base sm:text-lg hover:bg-[#00B7B5]/20 transition w-fit"
+              onClick={HandleProject}
+            >
+              Add Projects Next
+            </button>
+            <button
+              type="button"
+              className="px-6 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-base sm:text-lg hover:bg-[#00B7B5]/20 transition w-fit"
+              onClick={GoBack}
+            >
+              Go Back
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
-   
-  </div>
 
-    {/* right preview */}
-   <div className='lg:w-2/5 mt-25 mb-4 '>
- 
-    <div
-      ref={templateRef}
-      className="border border-gray-400  overflow-auto max-h-[85vh] border-dashed border-gray-300 rounded-md  bg-gray-50 "
-    >
-      {finalTemplate === "modern" ? (
-        <Template1 data={formData} />
-      ) : (
-        <Template2 data={formData} />
-      )}
+    {/* RIGHT SECTION - Live Preview */}
+    <div className="lg:w-2/5 w-full mt-6 lg:mt-0">
+      <div
+        ref={templateRef}
+        className="border border-dashed border-gray-300 rounded-md bg-gray-50 overflow-auto max-h-[50vh] sm:max-h-[70vh] lg:max-h-[85vh] p-2 sm:p-4"
+      >
+        {finalTemplate === "modern" ? (
+          <Template1 data={formData} />
+        ) : (
+          <Template2 data={formData} />
+        )}
+      </div>
     </div>
-</div>
-
 
   </div>
 );
+
 
 
 }

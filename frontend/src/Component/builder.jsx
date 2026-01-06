@@ -292,61 +292,79 @@ const templateRef = useRef(null);
   ///
   //  h-screen : OCCUPY FULL HEIGHT OF THE SCREEN 
   return (
- <div className="min-h-screen bg-white flex flex-col lg:flex-row gap-6 px-4 py-6">
+  <div className="min-h-screen bg-white flex flex-col lg:flex-row gap-6 px-4 sm:px-6 py-6">
 
- 
-  <div className="lg:w-3/5 w-full">
-  
-    <div className="mt-10 mb-4">
-      <h2 className="text-3xl font-black text-[#018790] tracking-tight mb-3">
-        Add the header content.
-      </h2>
-      <h1 className="text-xl text-gray-500 tracking-tight">
-        Add in your name, mail and contact, make sure they are right! The interviewers need to reach you!!
-      </h1>
-    </div>
+    {/* LEFT SECTION - Form */}
+    <div className="lg:w-3/5 w-full">
+      <div className="mt-10 mb-6">
+        <h2 className="text-2xl sm:text-3xl font-black text-[#018790] tracking-tight mb-2 sm:mb-3">
+          Add the header content
+        </h2>
+        <h1 className="text-sm sm:text-base text-gray-500 tracking-tight">
+          Add in your name, email, and contact. Make sure they are correct! The interviewers need to reach you!
+        </h1>
+      </div>
 
-   
-    <div className="bg-[#F4F4F4] rounded-lg shadow-sm border border-[#018790]/20 lg:p-8 overflow-auto max-h-[90vh]">
-      <form className="flex flex-col gap-6">
-        {/* PERSONAL INFO */}
-        <div className="flex flex-col gap-3">
-          <h3 className="font-medium text-gray-700">Personal Information</h3>
+      <div className="bg-[#F4F4F4] rounded-lg shadow-sm border border-[#018790]/20 p-4 sm:p-6 lg:p-8 overflow-auto max-h-[70vh] sm:max-h-[80vh] lg:max-h-[90vh]">
+        <form className="flex flex-col gap-4 sm:gap-6">
+          {/* PERSONAL INFO */}
           <div className="flex flex-col gap-3">
-            <input type="text" placeholder="Name" className="input border border-gray-300 bg-white px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-            <input type="email" placeholder="Email" className="input border border-gray-300 bg-white px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-            <input type="text" placeholder="Phone Number" className="input border border-gray-300 bg-white px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" value={formData.phoneNumber} onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })} />
+            <h3 className="font-medium text-gray-700">Personal Information</h3>
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Name"
+                className="input border border-gray-300 bg-white px-3 sm:px-4 py-2 sm:py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                className="input border border-gray-300 bg-white px-3 sm:px-4 py-2 sm:py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                className="input border border-gray-300 bg-white px-3 sm:px-4 py-2 sm:py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors"
+                value={formData.phoneNumber}
+                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+              />
+            </div>
           </div>
-        </div>
 
-        <div>
-          <button type="button" className="px-7 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-lg hover:bg-[#00B7B5]/20 transition w-fit" onClick={HandleEducation}>Add Education Next</button>
-        </div>
-      </form>
+          <div>
+            <button
+              type="button"
+              className="px-5 sm:px-7 py-2 sm:py-3 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-base sm:text-lg hover:bg-[#00B7B5]/20 transition w-fit"
+              onClick={HandleEducation}
+            >
+              Add Education Next
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+
+    {/* RIGHT SECTION - Live Preview */}
+    <div className="lg:w-2/5 w-full mt-6 lg:mt-0">
+      <div
+        ref={templateRef}
+        className="border border-dashed border-gray-300 rounded-md bg-gray-50 overflow-auto max-h-[50vh] sm:max-h-[70vh] lg:max-h-[85vh] p-2 sm:p-4"
+      >
+        {finalTemplate === "modern" ? (
+          <Template1 data={formData} />
+        ) : (
+          <Template2 data={formData} />
+        )}
+      </div>
+    </div>
+
   </div>
-
-  {/* RIGHT SECTION - Live Preview */}
-
-
- {/* right preview */}
-   <div className='lg:w-2/5 mt-25 mb-4 '>
- 
-    <div
-      ref={templateRef}
-      className="border border-gray-400  overflow-auto max-h-[85vh] border-dashed border-gray-300 rounded-md  bg-gray-50 "
-    >
-      {finalTemplate === "modern" ? (
-        <Template1 data={formData} />
-      ) : (
-        <Template2 data={formData} />
-      )}
-    </div>
-</div>
-
-
-</div>
 );
+
 
 
 }
