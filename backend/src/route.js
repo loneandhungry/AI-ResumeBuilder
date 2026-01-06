@@ -22,7 +22,7 @@ route.get("/",(req,res)=>{
 })
 
 route.use(cors({
-    origin: `${process.dotenv.FRONTEND_URL}`,
+    origin: process.env.FRONTEND_URL,
     credentials: true,
 }))
 
