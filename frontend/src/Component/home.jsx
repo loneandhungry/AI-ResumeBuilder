@@ -88,9 +88,9 @@ const Contact = ()=> {
 
             <button
               onClick={createButton}
-              className="px-8 py-4 bg-[#00B7B5] text-white text-lg font-semibold rounded-lg hover:bg-[#018790] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="px-8 py-4 bg-[#02adaa] text-white text-lg font-semibold rounded-lg hover:bg-[#018790] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              Create Resume
+              Build Resume Now
             </button>
 
             <div className="flex items-center gap-8 pt-4">
@@ -192,7 +192,7 @@ const Contact = ()=> {
           </svg>
         </div>
         <p className="text-center text-lg font-semibold text-gray-800">
-          Create, edit and download multiple resumes.
+          Build, edit and download multiple resumes.
         </p>
       </div>
     </div>
@@ -213,7 +213,7 @@ const Contact = ()=> {
         onClick={createButton}
         className="px-10 py-5 bg-white text-[#018790] text-xl font-bold rounded-xl   transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
       >
-        Create Resume
+        build Resume
       </button>
     </div>
 
@@ -248,7 +248,9 @@ const Contact = ()=> {
           <p className="text-white/80 mb-6 font-normal">
             Learn more about our mission and vision
           </p>
-          <button className="px-6 py-3 bg-white text-[#018790] font-semibold rounded-lg hover:bg-[#00B7B5] hover:text-white transition-all duration-300">
+          <button 
+          onClick={About}
+          className="px-6 py-3 bg-white text-[#018790] font-semibold rounded-lg hover:bg-[#00B7B5] hover:text-white transition-all duration-300">
             Learn More
           </button>
         </div>
@@ -266,7 +268,9 @@ const Contact = ()=> {
           <p className="text-white/80 mb-6 font-normal">
             Get in touch with our support team
           </p>
-          <button className="px-6 py-3 bg-white text-[#018790] font-semibold rounded-lg hover:bg-[#00B7B5] hover:text-white transition-all duration-300">
+          <button
+          onClick={Contact}
+           className="px-6 py-3 bg-white text-[#018790] font-semibold rounded-lg hover:bg-[#00B7B5] hover:text-white transition-all duration-300">
             Contact Us
           </button>
         </div>

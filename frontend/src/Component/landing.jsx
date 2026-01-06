@@ -97,21 +97,60 @@ const time = (time) => {
               else return `${new Date(time).toLocaleDateString("en-IN")}`
 }
 
+const Account = async() => {
+  try{
+   const response = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/isauth`,
+     { withCredentials: true }
+);
+   navigate("/landing")
+}catch(err){
+  console.log(err);
+  localStorage.setItem("where", 1 );
+  navigate("/login");
+  
+}
+}
+
+const About = ()=> {
+  navigate("/about");
+}
+
+const Contact = ()=> {
+  navigate("/contact");
+}
+
 
  return(
+
   <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] via-white to-[#F4F4F4] px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    
+     <nav className="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-sm border-b border-[#018790]/10 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto h-20 flex items-center justify-between px-8">
+          
+         <div  onClick = {()=>{
+            navigate("/");
+          }}
+          className="cursor-pointer text-3xl font-bold text-[#018790] tracking-tight">
+            Builder.IO
+          </div>
 
-    {/* HERO GREETING */}
-    <div className="max-w-7xl mx-auto mb-8 sm:mb-10">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-        <div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-[#018790] leading-none tracking-tight">
-            Hi, {user} 👋
-          </h1>
-          <div className="h-1 w-20 bg-[#00B7B5] rounded-full mt-4"></div>
-        </div>
+          <div className="flex items-center gap-6">
+            
 
-        <button
+            <a
+              onClick={About}
+              className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-[#018790] transition-colors"
+            >
+              About Us
+            </a>
+
+            <a
+              onClick={Contact}
+              className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-[#018790] transition-colors"
+            >
+              Contact
+            </a>
+             <button
           onClick={signout}
           className="w-fit px-6 py-3 text-sm font-semibold
             border-2 border-[#018790] text-[#018790]
@@ -119,6 +158,22 @@ const time = (time) => {
         >
           Sign Out
         </button>
+          </div>
+        </div>
+      </nav>
+
+
+    {/* HERO GREETING */}
+    <div className="max-w-7xl mx-auto mb-8 sm:mb-10">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+        <div>
+          <h1 className="text-5xl sm:text-6xl pt-10 md:text-7xl font-black text-[#018790] leading-none tracking-tight">
+            Hi, {user} 👋
+          </h1>
+          <div className="h-1 w-20 bg-[#00B7B5] rounded-full mt-4"></div>
+        </div>
+
+      
       </div>
 
       <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl font-normal leading-relaxed">
@@ -138,7 +193,7 @@ const time = (time) => {
           onClick={createResume}
           className="w-fit px-8 py-3 bg-[#00B7B5] text-white text-base font-semibold rounded-lg hover:bg-[#018790] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
         >
-          + Create Resume
+          + Build Resume
         </button>
       </div>
 
@@ -153,7 +208,7 @@ const time = (time) => {
             onClick={createResume}
             className="px-8 py-4 bg-[#00B7B5] text-white text-lg font-semibold rounded-lg hover:bg-[#018790] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            Create your first resume
+            Build your first resume
           </button>
         </div>
       ) : (
