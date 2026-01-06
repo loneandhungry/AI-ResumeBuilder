@@ -6,76 +6,98 @@ const Template1 = ({data}) => {
 return (
   <div
     id="element-to-print"
-    className="min-h-screen bg-white flex justify-center p-10"
+    className="min-h-screen bg-white flex justify-center px-6 py-10 font-serif tracking-tight"
   >
-    <div className="w-full max-w-3xl p-8 border border-black">
+    <div className="w-full max-w-3xl px-8 py-6  text-black">
 
       {/* Header */}
-      <div className="border-b border-black pb-4 mb-6">
-        <h1 className="text-3xl font-bold text-black">{data.name}</h1>
-        <p className="text-black text-sm">Email: {data.email}</p>
-        <p className="text-black text-sm">Contact: {data.phoneNumber}</p>
-        {data.linkedin && (
-          <p className="text-black text-sm">LinkedIn: {data.linkedin}</p>
-        )}
+      <div className="border-b border-black pb-3 mb-5">
+        <h1 className="text-[18px] font-bold tracking-tight">
+          {data.name || "Jhon Doe"}
+        </h1>
+
+        <div className="mt-1 text-[11px] flex flex-wrap gap-x-3">
+          <span>Email: {data.email || "johnDoe@gmail.com"}</span>
+          <span>Contact: {data.phoneNumber || "999999999"}</span>
+        </div>
       </div>
 
       {/* Education */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-black">
-          Education
-        </h2>
+<div className="mb-5">
+  <h2 className="text-[15px] font-semibold uppercase tracking-wide border-b pb-3 border-black mb-3">
+    Education
+  </h2>
 
-        {data.education?.map((edu, index) => (
-          <div key={index} className="mb-3 text-sm text-black">
-            <p><strong>College:</strong> {edu.college}</p>
-            <p><strong>Degree:</strong> {edu.degree}</p>
-            <p><strong>CGPA:</strong> {edu.cg}</p>
-            <p>
-              <strong>Duration:</strong> {edu.start_year} - {edu.end_year}
-            </p>
-          </div>
-        ))}
+  {data.education?.map((edu, index) => (
+    <div
+      key={index}
+      className="mb-3 grid grid-cols-3 gap-x-4 text-[11px] leading-snug"
+    >
+      {/* Institution & Degree */}
+      <div className="col-span-2">
+        <p className="text-[15px] ">{edu.college || "Birla Institue Of Technology"}</p>
+        <p className="text-[13px]">{edu.degree || "BTECH"}</p>
       </div>
 
+      {/* CGPA & Duration */}
+      <div className=" text-[11px] text-right">
+        <p>CGPA: {edu.cg || "9"}</p>
+        <p>
+          {edu.start_year || "20xx"} – {edu.end_year || "20xx"}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+
+
       {/* Skills */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-black">
+      <div className="mb-5">
+        <h2 className="text-[15px] font-semibold uppercase tracking-wide border-b pb-3 border-black mb-3">
           Skills
         </h2>
-        <div className="flex flex-wrap gap-2">
+
+        <div className="flex flex-wrap gap-x-3 gap-y-1 ">
           {data.skills?.map((skill, index) => (
             <span
-              key={index}
-              className="px-3 py-1 border border-black text-sm text-black"
-            >
-              {skill || ""}
-            </span>
+           key={index}
+           className="text-[11px]"
+           >
+             {skill || "React"}
+           </span>
           ))}
         </div>
       </div>
 
       {/* Experience */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-black">
+      <div className="mb-5">
+        <h2 className="text-[15px] font-semibold uppercase tracking-wide border-b pb-3 border-black mb-3">
           Experience
         </h2>
 
         {data.experience?.map((exp, index) => (
-          <div key={index} className="mb-4 text-black">
-            <p className="font-medium text-sm">
-              {exp.role || ""} {exp.company && `— ${exp.company}`}
+          <div key={index} className="mb-4">
+           <p className="">
+  <span className="font-medium text-[11px]">{exp.role || "Data Analyst"}</span>
+  { (
+    <>
+      {" — "}
+      <span className="font-bold text-[13px]">{exp.company ||"Company"}</span>
+    </>
+  )}
+</p>
+
+
+            <p className='text-[11px]'>
+              Duration:{" "}
+              {`(${exp.duration || "10 Years"})`}
             </p>
+             <p className=" text-black text-[11px]">
+                  Description:
+                </p>
 
-            {(exp.start_date || exp.end_date) && (
-              <p className="text-[11px]">
-                {exp.start_date || ""} - {exp.end_date || ""}
-                {exp.duration && ` (${exp.duration})`}
-              </p>
-            )}
-
-            {exp.description && (
-              <ul className="list-disc pl-4 text-[10px] leading-relaxed mt-1">
+            { (
+              <ul className="list-disc pl-5 text-[11px] leading-relaxed">
                 {exp.description
                   .split("\n")
                   .filter(line => line.trim() !== "")
@@ -91,25 +113,29 @@ return (
       </div>
 
       {/* Projects */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-black">
+      <div>
+        <h2 className="text-[15px] font-semibold uppercase tracking-wide border-b pb-3 border-black mb-3">
           Projects
         </h2>
 
         {data.projects?.map((project, index) => (
-          <div key={index} className="mb-4 text-black">
-            <p className="font-medium text-sm">
-              {project.title || ""}
+          <div key={index} className="mb-4">
+            <p className="text-[13px] font- font-bold">
+              {project.title || "Resume Builder"}
             </p>
 
-            {project.techstack && (
-              <p className="text-[11px]">
-                <strong>Tech Stack:</strong> {project.techstack}
+            
+              <p className="text-[11px] mb-1">
+                Tech Stack: {project.techstack || "React"}
               </p>
-            )}
+            
+            <p className=" text-[15px] mb-1">
+                  Description:
+                </p>
 
-            {project.description && (
-              <ul className="list-disc pl-4 text-[10px] leading-relaxed mt-1">
+
+            { (
+              <ul className="list-disc pl-5 text-[11px] leading-relaxed">
                 {project.description
                   .split("\n")
                   .filter(line => line.trim() !== "")
@@ -121,19 +147,30 @@ return (
               </ul>
             )}
 
-            {project.github && (
-              <p className="text-[10px]">
-                GitHub: {project.github}
+            { (
+              <p className="text-[11px] mt-1">
+                GitHub: {project.github || "project.github.com"}
               </p>
             )}
+        
           </div>
+          
         ))}
+
+            <div className="mb-6">
+        <h2 className="text-[15px] font-semibold uppercase tracking-wide border-b pb-3 border-black mb-3">
+          Social:
+        </h2>
+
+        <p className="text-[11px] text-black">
+          <strong>LinkedIn Profile:</strong> {data.linkedin || "johndoe@linkedin.com"}
+        </p>
+      </div>
       </div>
 
     </div>
   </div>
 );
-
-}
+};
     
 export default Template1

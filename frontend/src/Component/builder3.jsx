@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { useState } from 'react';
 import { data, useNavigate } from 'react-router-dom';
@@ -10,8 +10,11 @@ import html2pdf from 'html2pdf.js'
 import { useRef } from 'react';
 import Signup from './signup.jsx';
 
-const Builder = () => {
 
+
+
+const Builder3 = () => {
+  
     const location = useLocation();  //location needs to be declared within the component only, 
     //not outside, becuase it is the LOCATION of the COMPONENENT
     const template = localStorage.getItem("template");
@@ -22,7 +25,7 @@ const Builder = () => {
 
     const navigate = useNavigate();
 
-   
+    
 
     const download = () =>{
      var element = document.getElementById("element-to-print");
@@ -31,9 +34,10 @@ const Builder = () => {
    
     const submitHandler = async(e) =>{
          e.preventDefault()    //STOPS PAGE RELOAD
-         
           localStorage.setItem("form",JSON.stringify(formData)); //LOCALSTORAGE CANNOT STORE OBJECTS
-                                                              //IT CAN ONLY STORE STRINGS
+                                 //IT CAN ONLY STORE STRINGS
+        data = JSON.parse(localStorage.getItem("form"));
+          
          try{
      const response = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/isauth`,
      { withCredentials: true }
@@ -41,14 +45,20 @@ const Builder = () => {
      if(response.status === 200 ){     //axios.get  
 //////////////////////////////////////
     if(!data._id){
+      delete data._id;  // SOLVED MAJOR BUG HERE // ._id cannot be empty, if you send it empty, resume wont get
+      //saved at all , because schema will only not pass
+    
+  
      try{
       const saveResume = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/build`,
-        {profile: {...formData}},
+        {...data},
         {withCredentials: true}
       )
       if(saveResume) {
         alert("Your resume has been created. Please check your downloads.");
-   //     localStorage.removeItem("form"); //clear localstorage //kep should be there in inveterd commas
+       localStorage.removeItem("form");
+       localStorage.removeItem("template");
+        
       } else{
         alert("Unable to create your resume at this moment");
       }
@@ -57,15 +67,17 @@ const Builder = () => {
      }
     } 
     else {
-     const resumeID = data._id; console.log(resumeID);
+      console.log("two");
+     const resumeID = data._id; 
       try{
       const saveResume = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/resumeUpdate/${resumeID}`,
-        formData,
+        data,
         {withCredentials: true})
         
        if(saveResume) {
         alert("Your resume has been updated. You can download it now.");
-   //     localStorage.removeItem("form");
+       localStorage.removeItem("form");  //clear localstorage //key should be there in inveterd commas
+       localStorage.removeItem("template");
       } else{
         alert("Unable to update your resume at this moment");
       }} catch(err){
@@ -76,7 +88,7 @@ const Builder = () => {
   } 
  
    download();
- //  localStorage.removeItem("form");
+  
     navigate("/landing", {replace:true});
 }
 }catch(err){
@@ -86,13 +98,7 @@ const Builder = () => {
            user : formData,
       }})
 
-     
-    }
-
-    ///
-   
- 
-
+     }
     }
   
 
@@ -100,7 +106,8 @@ const Builder = () => {
 
 const form =  localStorage.getItem("form") ;
 let data = (form) ? JSON.parse(form) : {};// agar form empty ho to parse krne se error ho jaayega
-//
+
+const[button,setButton] = useState(false);
 
 const [formData, setFormData] = useState({  ///WE WILL MAKE AN ARRAY OF ITEMS TO BE CHANGED
     _id: data._id || "",
@@ -160,75 +167,10 @@ const removeProject = () => {
   setFormData({...formData, projects: newProject});
 }
 
-const handleExperience = (index, field, value) =>{
-        let newExperience = [...formData.experience];
-        newExperience[index]  = {...newExperience[index] , [field] : value}
 
-        setFormData({...formData , experience: newExperience})
-}
-
-const addExperience = () =>{
-    let newExperience = [...formData.experience];
-    newExperience = [...newExperience, { company: "", role:"", duration:"", description:"",start_date:"",end_date:""}]
-    setFormData({...formData, experience: newExperience})
-}
-
-const removeExperience = () => {
-  let Experience = [...formData.experience];
-  Experience = Experience.slice(0,-1);                   ////Learn Slice function
-  setFormData({...formData, experience: Experience});
-}
-
-const handleSkill = (index,value) => {
-    let skill = [...formData.skills];
-    skill[index] = value;
-    setFormData({...formData, skills: skill})
-}
-
-const addSkill = () => {
-    let newSkills = [...formData.skills];
-    newSkills = [...newSkills,""]
-    setFormData({...formData , skills: newSkills})
-}
-
-const removeSkill = () => {
-  let skill = [...formData.skills];
-  let newSkills = [];
-  for(let i = 0 ; i<skill.length();i++){
-   if(i!= skill.length-1) newSkill.push(skill[i]);
-  }
-  setFormData({...formData, skills: newSkills})
-}
-
-const handleEducation = (index,field,value) =>{
-       let newEducation = [...formData.education];
-       newEducation[index] = {...newEducation[index] , [field] : value}
-
-      
-       setFormData({...formData, education: newEducation})
-};
-
-const addEducation = () => {
-    let newEducation = [...formData.education];
-    newEducation = [...newEducation , {college: "" , degree: "", cg: "", start_year: "", end_year: ""}];
-    setFormData({...formData, education: newEducation});
-}
-
-const removeEducation = () => {
-  let Education = [...formData.education];
-  let newEducation = [];
-  for(let i = 0 ; i<Education.length; i++){
-    if(i != Education.length-1){newEducation.push(Education[i])};
-  }
-  setFormData({...formData, education: newEducation});
-}
-
-const HandleEducation = () => {
-    localStorage.setItem("form",JSON.stringify(formData));
-    navigate("/builder1");
-}
 
 const HandleEnhance = async () => {
+  setButton(true);
    if(!formData.projects[0] && !formData.experience[0]){
     alert("Please fill in the description to use this Features.");
     return;
@@ -277,6 +219,7 @@ const HandleEnhance = async () => {
       projects: newProject, 
       experience: newExperience
     }));
+    setButton(false);
 
 } catch(err){
   console.log(err);
@@ -287,50 +230,81 @@ const HandleEnhance = async () => {
 const templateRef = useRef(null);
 // console.log(templateRef.current);
 
+const GoBack = () => {
+    localStorage.setItem("form",JSON.stringify(formData));
+    navigate("/builder2");
+}
 
 
   ///
   //  h-screen : OCCUPY FULL HEIGHT OF THE SCREEN 
   return (
- <div className="min-h-screen bg-white flex flex-col lg:flex-row gap-6 px-4 py-6">
-
- 
-  <div className="lg:w-3/5 w-full">
+  <div className="min-h-screen bg-white flex flex-col lg:flex-row gap-6 px-4 py-6">
+   <div className="lg:w-3/5 w-full">
   
-    <div className="mt-10 mb-4">
+    <div className="mt-3 mb-4">
       <h2 className="text-3xl font-black text-[#018790] tracking-tight mb-3">
-        Add the header content.
+        Add in your projects
       </h2>
       <h1 className="text-xl text-gray-500 tracking-tight">
-        Add in your name, mail and contact, make sure they are right! The interviewers need to reach you!!
+      Projects that prove your skills.
       </h1>
     </div>
 
    
-    <div className="bg-[#F4F4F4] rounded-lg shadow-sm border border-[#018790]/20 lg:p-8 overflow-auto max-h-[90vh]">
-      <form className="flex flex-col gap-6">
-        {/* PERSONAL INFO */}
-        <div className="flex flex-col gap-3">
-          <h3 className="font-medium text-gray-700">Personal Information</h3>
-          <div className="flex flex-col gap-3">
-            <input type="text" placeholder="Name" className="input border border-gray-300 bg-white px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-            <input type="email" placeholder="Email" className="input border border-gray-300 bg-white px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-            <input type="text" placeholder="Phone Number" className="input border border-gray-300 bg-white px-4 py-3 rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" value={formData.phoneNumber} onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })} />
+    <div className="bg-[#F4F4F4] rounded-lg border border-[#018790]/20 p-6 lg:p-8 overflow-auto ">
+     <form onSubmit={submitHandler} className="flex flex-col gap-6">
+
+
+        {/* PROJECTS */}
+        <div className="flex flex-col gap-4">
+          <h3 className="font-medium text-gray-700">Projects</h3>
+          {formData.projects.map((proj, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+              <div className="flex flex-col gap-3">
+                <input className="input border border-gray-300 px-4 py-3 bg-white rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="Title" value={proj.title} onChange={(e) => handleProject(index, "title", e.target.value)} />
+                <input className="input border border-gray-300 px-4 py-3 bg-white rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="GitHub" value={proj.github} onChange={(e) => handleProject(index, "github", e.target.value)} />
+                <input className="input border border-gray-300 px-4 py-3  bg-whiterounded-md focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="Techstack" value={proj.techstack} onChange={(e) => handleProject(index, "techstack", e.target.value)} />
+              </div>
+              <textarea className="input border border-gray-300 px-4 py-3 bg-white rounded-md focus:border-[#00B7B5] focus:outline-none transition-colors min-h-[120px] resize-none" placeholder="Project description (can be enhanced using AI)" value={proj.description} onChange={(e) => handleProject(index, "description", e.target.value)} />
+            </div>
+          ))}
+          <div className="flex flex-col sm:flex-row gap-3">
+              <button type="button" className="btn-secondary w-fit" onClick={addProject}>+ Add Project</button>
+            <button type="button" className="btn-secondary w-fit mx-4" onClick={removeProject}>+ Remove Project</button>
           </div>
         </div>
+        <div> 
+          <button type="button" className={`px-4 py-2 rounded-md border
+            ${button === false ? "bg-white" : "bg-[#00B7B5]/10"}
+           border-[#00B7B5] text-[#00B7B5] text-lg
+           hover:bg-[#00B7B5]/10 transition w-full` }onClick={HandleEnhance}>✨ Enhance with AI</button>
+        </div>
 
-        <div>
-          <button type="button" className="px-7 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-lg hover:bg-[#00B7B5]/20 transition w-fit" onClick={HandleEducation}>Add Education Next</button>
+        {/* SOCIAL */}
+        <div className="flex flex-col gap-3">
+          <h3 className="font-medium text-gray-700">Social</h3>
+          <input className="input border border-gray-300 px-4 py-3 rounded-md bg-white focus:border-[#00B7B5] focus:outline-none transition-colors" placeholder="LinkedIn Profile" value={formData.linkedin} onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })} />
+        </div>
+
+       <div>
+        <button type="submit" className="w-full sm:w-fit px-6 py-3 bg-[#00B7B5] text-white font-medium rounded-md hover:bg-[#018790] transition">
+          Download Resume
+        </button>
+         <button type="button" className=" mx-5 px-7 py-2 rounded-md border-2 border-[#00B7B5] text-[#00B7B5] text-lg hover:bg-[#00B7B5]/20 transition w-fit" onClick={GoBack}>Go Back</button>
         </div>
       </form>
+
+      
+      
     </div>
+   
   </div>
 
-  {/* RIGHT SECTION - Live Preview */}
+    {/* RIGHT SECTION - Live Preview */}
 
 
- {/* right preview */}
-   <div className='lg:w-2/5 mt-25 mb-4 '>
+<div className='lg:w-2/5 mt-25 mb-4 '>
  
     <div
       ref={templateRef}
@@ -343,12 +317,10 @@ const templateRef = useRef(null);
       )}
     </div>
 </div>
-
-
-</div>
+  </div>
 );
 
 
 }
 
-export default Builder
+export default Builder3
