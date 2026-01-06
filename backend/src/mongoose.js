@@ -4,9 +4,7 @@ import dotenv from "dotenv"
 dotenv.config({path: "../.env.local"});
 
 
-
-export const person = mongoose.model('users',  //users is the collection here
-   { userID: {type : String, required : true },
+const personSchema = mongoose.Schema( { userID: {type : String, required : true },
      username : {type : String, required : true},
      name : {type : String},
      email: {type : String},
@@ -39,9 +37,13 @@ export const person = mongoose.model('users',  //users is the collection here
         description: String
      }],
      linkedin: String, 
-    
-}
-)
+     template: String
+    },
+   { timestamps : true, }
+   )
+
+export const person = mongoose.model('users', personSchema);  //users is the collection here
+  
 
 export const personLogin = mongoose.model('logins', //logins is the collection here //database is specified at the end of the url
     {

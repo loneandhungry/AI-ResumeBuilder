@@ -22,22 +22,13 @@ route.get("/",(req,res)=>{
 })
 
 route.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: "http://localhost:5173",
     credentials: true,
     withCredentials: true
 }))
 
 
 route.post("/build",verify,async(req,res)=>{
-  /*  const parsed = schema.safeParse(req.body);
-    if(!parsed.success){
-        console.log(parsed.error);      // safeParse never throws errors. Instead it returns back an object, like parsed.error.errors
-        return res.status(400).json({
-            message : "Please enter all the required fields."
-        })
-    }
-        */
- //  const data = parsed.data;
  const data = req.body;
  console.log(data);
     try {
@@ -119,8 +110,8 @@ route.post("/signin",async(req,res)=>{
       
       res.cookie("authToken",token,{  //name,value
         httpOnly: true,  //	Flags the cookie to be accessible only by the web server.
-        secure: true,  //marks the cookie to be used with https only
-        sameSite: "none", //Value of the “SameSite” Set-Cookie attribute
+       // secure: false,  //marks the cookie to be used with https only
+        sameSite: "strict", //Value of the “SameSite” Set-Cookie attribute
         maxAge: 2*24*60*60*1000
       })
       
@@ -266,9 +257,9 @@ route.delete("/user/delete/:id", verify , async(req,res)=>{
 
 route.post("/signout",verify,(req,res)=>{
         res.clearCookie("authToken",{
-           httpOnly: true,  //	Flags the cookie to be accessible only by the web server.
-       // secure: true,  //marks the cookie to be used with https only
-        sameSite: "lax", //Value of the “SameSite” Set-Cookie attribute
+         httpOnly: true,  //	Flags the cookie to be accessible only by the web server.
+       // secure: false,  //marks the cookie to be used with https only
+        sameSite: "strict", //Value of the “SameSite” Set-Cookie attribute
         maxAge: 2*24*60*60*1000
     })
      return res.json({ msg : "You have successfullly signed out."})
@@ -297,7 +288,7 @@ route.get("/profile", verify, async (req,res) =>{
     const description =  req.body.description;
     const title = req.body.title;
     const techstack= req.body.techstack;
-   // if(!description) return;
+    if(!description) return;
     
   
  const  prompt = `You are a professional resume writer.
@@ -367,7 +358,7 @@ const response = await fetch(
     const role = req.body.role;
     const description= req.body.description;
     const duration= req.body.duration;
-   //  if(!description) return;
+    if(!description) return;
   
  const  prompt = `You are a professional resume writer.
 
@@ -429,18 +420,36 @@ const response = await fetch(
  
 });
 
-route.post("/profileBuild" , verify, async(req,res) =>{
-    const userID = req.user.userID;
+route.post("/resumeUpdate/:resumeID" , verify, async(req,res) =>{
+    const userID = req.user;
+    const resumeID = req.params.resumeID;
     const profile = req.body;
     try{
-    const find = await personLogin.findByIdAndUpdate(userID,  {
-        $set: {  profile }   //  ONLY updates profile
-      }, { new: true });
+    const find = await person.findByIdAndUpdate(resumeID,  
+         profile   
+      , { new: true });
      res.json({
-        msg: "Profile Updated"
+        msg: "Resume Updated",
+        profile: profile
      }) 
     if(!find){
         return res.send("Cannot find the UserID");
+    }
+}catch(err){
+    console.log(err);
+}
+})
+
+route.delete("/resumeDelete/:resumeID" , verify, async(req,res) =>{
+    const userID = req.user;
+    const resumeID = req.params.resumeID;
+    try{
+    const find = await person.findByIdAndDelete(resumeID  );
+     res.json({
+        msg: "Resume Deleted"
+     }) 
+    if(!find){
+        return res.send("Cannot delete the resume");
     }
 }catch(err){
     console.log(err);
