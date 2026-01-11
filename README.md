@@ -2,7 +2,7 @@
 # AI Resume Builder
 
 * I have built Builder. IO to make resume building simple, fast, and ATS-friendly.
-* Live at : https://lnkd.in/gsn6XhKp
+* Live at : https://ai-resume-builder-dun-kappa.vercel.app/
 
 
  # Core Features
